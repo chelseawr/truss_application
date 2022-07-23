@@ -1,0 +1,40 @@
+<div class="main-container mat-elevation-z8">
+
+    <mat-table #table [dataSource]="dataSource" matSort>
+        
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Planet Name</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="climate">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Climate</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.climate}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="terrain">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Terrain</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.terrain}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="res">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Residents</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.res}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="population">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Population</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.population}} </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="waterSA">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Water Surface Area</mat-header-cell>
+            <mat-cell *matCellDef="let element"> {{element.waterSA}} </mat-cell>
+        </ng-container>
+        
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        
+    </mat-table>    
+
+</div>
