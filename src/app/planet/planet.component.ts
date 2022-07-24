@@ -15,6 +15,7 @@ export class PlanetComponent implements OnInit {
   planetObj = {} as PlanetInterface;
   origObj: any;
   dataSource: any;
+  isLoading = true;
   page:  number = 1;
   displayedColumns: string[] = ['name', 'climate', 'terrain', 'population', 'res', 'waterSA'];
 
@@ -46,7 +47,7 @@ export class PlanetComponent implements OnInit {
 
     this.origObj = this.SWAPI.getPlanets().subscribe({
       next: data => {
-
+        this.isLoading = false;
         this.origObj = data;
 
         // TODO population spacing
@@ -93,6 +94,7 @@ export class PlanetComponent implements OnInit {
       },
       error: error => {
           console.error('There was an error!', error);
+          this.isLoading = false;
       }
     })
 
