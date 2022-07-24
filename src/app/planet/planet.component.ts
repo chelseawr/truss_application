@@ -28,18 +28,33 @@ export class PlanetComponent implements OnInit {
 
   constructor(private SWAPI: PlanetService) { }
 
+
   // Helper functions
-  replace_unkown(obj: any){
+  format_helper(obj: any){
     // clone to new obj
     let newObj = JSON.parse(JSON.stringify(obj));
 
-    // replace any unknown strings with ?
     for (const key of Object.keys(newObj)) {
+
+      // number formatting
+      if (key != 'created' && key != 'edited'){ // skip dates
+        if (parseInt(newObj[key]) > 999){
+          newObj[key] = this.formatNumber(parseInt(newObj[key]));
+        }
+      }
+
+      // replace any unknown strings with ?
       if (obj[key] === 'unknown') {
         newObj[key] = '?';
       }
     }
     return newObj;
+  }
+
+  // Format number spacing every 3 with ' '
+  // Returns a string
+   formatNumber(num: number) {
+    return num.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1 ');
   }
 
   ngOnInit(): void {
@@ -49,36 +64,32 @@ export class PlanetComponent implements OnInit {
       next: data => {
         this.isLoading = false;
         this.origObj = data;
-
-        // TODO population spacing
-
         let newParent: object[] = [];
+
         // Loop through each result
         for (let x=0; x < this.origObj.results.length; x++){
 
-          // Replace any unknown values
-          this.planetObj = this.replace_unkown(this.origObj.results[x]);
+          // Copies obj and replaces any unknown values, number formatting
+          this.planetObj = this.format_helper(this.origObj.results[x]);
 
-          // Copy values that do not need mangling
-          this.planetObj.name = this.origObj.results[x].name;
-          this.planetObj.climate = this.origObj.results[x].climate;
-          this.planetObj.terrain = this.origObj.results[x].terrain;
-          this.planetObj.url = this.origObj.results[x].url;
-
-          // Number of pernament residents (res)
+          // Number of permanement residents (res)
           this.planetObj.res = Array.isArray(this.origObj.results[x].residents) ? this.origObj.results[x].residents.length : 0;
 
           // Convert water surface area (waterSA)
-          // TODO break out func  getPlanetSA(diam) or similar
+              // TODO break out func  getPlanetSA(diam) or similar
           let planetSA = (4 * Math.PI * (parseInt(this.origObj.results[x].diameter) / 2));
           let waterPercentage = parseInt(this.origObj.results[x].surface_water);
 
-          if (Number.isInteger(waterPercentage)){
+          if (Number.isInteger(waterPercentage)){ // avoid NaN
             waterPercentage = waterPercentage / 100;
-            this.planetObj.waterSA = Math.round(planetSA * waterPercentage) + ' km\u00B2';
+            let waterSA = Math.round(planetSA * waterPercentage)
+            // format number as needed
+            this.planetObj.waterSA = waterSA > 999 ? this.formatNumber(waterSA) : waterSA.toString();
+            this.planetObj.waterSA = `${this.planetObj.waterSA} km\u00B2` // ^2
           }
           else this.planetObj.waterSA = '?';
 
+          // Save wrangled row object to parent obj
           newParent.push(this.planetObj);
         }
 
