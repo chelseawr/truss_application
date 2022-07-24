@@ -4,7 +4,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { map, catchError} from 'rxjs/operators';
 
-import { PlanetInterface } from './planet';
+import { APIPlanetInterface } from './planet';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class PlanetService {
 
 
   public getPlanets(){
-    return this.http.get<PlanetInterface[]>(this.baseUrl);
+    return this.http.get<APIPlanetInterface[]>(this.baseUrl);
   }
 
 }

@@ -2,20 +2,24 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { PlanetService } from '../planet.service';
 import {MatTableDataSource} from '@angular/material/table';
 import {MatSort} from '@angular/material/sort';
+import { ResourceLoader } from '@angular/compiler';
+import { APIPlanetInterface, PlanetInterface } from '../planet';
 
 @Component({
   selector: 'app-planet',
   templateUrl: './planet.component.html',
   styleUrls: ['./planet.component.scss']
 })
+
 export class PlanetComponent implements OnInit {
-  planetObj: any;
+  planetObj = {} as PlanetInterface;
+  origObj: any;
   dataSource: any;
   page:  number = 1;
   displayedColumns = ['name', 'climate', 'terrain', 'population', 'res', 'waterSA'];
 
   @ViewChild(MatSort)
-  sort!: MatSort;
+  sort: MatSort = new MatSort;
 
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
@@ -27,46 +31,62 @@ export class PlanetComponent implements OnInit {
     return Math.round(m) / 100 * Math.sign(num);  
   }
 
+  replace_unkown(obj: any){
+    // clone to new obj
+    let newObj = JSON.parse(JSON.stringify(obj));
+
+    // replace any unknown strings with ?
+    for (const key of Object.keys(newObj)) {
+      if (obj[key] === 'unknown') {
+        newObj[key] = '?';
+      }
+    }
+    return newObj;
+  }
+
   ngOnInit(): void {
     
 
-    this.planetObj = this.SWAPI.getPlanets().subscribe({
+    this.origObj = this.SWAPI.getPlanets().subscribe({
       next: data => {
         
-        this.planetObj = data;
-        console.log('one',this.planetObj);
-        this.dataSource = this.planetObj.results;
+        this.origObj = data;
+       
+        // TODO population spacing
 
-        // residents arr.len
-        // population spacing
-        // surface area covered by water
 
-        // while (this.planetObj.next != null){
-        //   console.log(this.page, this.planetObj.results);
-        //   this.page ++;
-        // }
-        // set planet obj variables here
+        let newParent: object[] = [];
+        // Loop through each result
+        for (let x=0; x < this.origObj.results.length; x++){
 
-        for (let x=0; x < this.planetObj.results.length; x++){
-          // Number of pernament residents
-          this.planetObj.results[x].res = this.planetObj.results[x].residents.length;
+          // Replace any unknown values
+          this.planetObj = this.replace_unkown(this.origObj.results[x]);
+          
+          // Copy values that do not need mangling
+          this.planetObj.name = this.origObj.results[x].name;
+          this.planetObj.climate = this.origObj.results[x].climate;
+          this.planetObj.terrain = this.origObj.results[x].terrain;
 
-          // % of planet that is water
-          // TODO break out func  getPlanetSA(diam)
-          let planetSA = (4 * Math.PI * (parseInt(this.planetObj.results[x].diameter) / 2));
-          let waterPercentage = parseInt(this.planetObj.results[x].surface_water);
-          console.log(planetSA, waterPercentage);
 
-          // Convert water surface area
+          // Number of pernament residents (res)
+          this.planetObj.res = Array.isArray(this.origObj.results[x].residents) ? this.origObj.results[x].residents.length : 0;
+  
+          // Convert water surface area (waterSA)
+          // TODO break out func  getPlanetSA(diam) or similar
+          let planetSA = (4 * Math.PI * (parseInt(this.origObj.results[x].diameter) / 2));
+          let waterPercentage = parseInt(this.origObj.results[x].surface_water);        
+          
           if (Number.isInteger(waterPercentage)){
-            // convert number to percentage
             waterPercentage = waterPercentage / 100;
-
-            this.planetObj.results[x].waterSA = this.round(planetSA * waterPercentage) + ' km\u00B2';
+            this.planetObj.waterSA = this.round(planetSA * waterPercentage) + ' km\u00B2';
           }
-          else this.planetObj.results[x].waterSA = 'Unknown';
+          else this.planetObj.waterSA = '?';
 
+          newParent.push(this.planetObj);
         }
+
+        // Set table source
+        this.dataSource = new MatTableDataSource(newParent);
       },
       error: error => {
           console.error('There was an error!', error);

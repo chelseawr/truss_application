@@ -1,4 +1,5 @@
-export interface PlanetInterface {
+// Handle object given by SWAPI
+export interface APIPlanetInterface {
     name: string;
     diameter: string;
     rotation_period: string;
@@ -14,3 +15,13 @@ export interface PlanetInterface {
     created: string;
     edited: string;
 }
+
+// Handle display object
+export interface PlanetInterface {
+    name: string;
+    res: string;
+    waterSA: string;
+    population: string;
+    terrain: string;
+    climate: string;
+  }
