@@ -12,6 +12,8 @@ import { APIPlanetInterface } from './planet';
 
 export class PlanetService {
 
+  // Defaults to page one, could add ?page=2 etc to url below
+  // Further implementations could use the Material Table pagination feature
   private baseUrl = "https://swapi.dev/api/planets/";
   constructor(private http: HttpClient) {}
 

@@ -83,6 +83,7 @@ export class PlanetComponent implements OnInit {
           if (Number.isInteger(waterPercentage)){ // avoid NaN
             waterPercentage = waterPercentage / 100;
             let waterSA = Math.round(planetSA * waterPercentage)
+
             // format number as needed
             this.planetObj.waterSA = waterSA > 999 ? this.formatNumber(waterSA) : waterSA.toString();
             this.planetObj.waterSA = `${this.planetObj.waterSA} km\u00B2` // ^2
@@ -99,9 +100,6 @@ export class PlanetComponent implements OnInit {
         // Sort table by name desc as default
         this.sort.sort(({ id: 'name', start: 'asc'}) as MatSortable);
         this.dataSource.sort = this.sort;
-
-        console.log(newParent);
-        console.log(this.dataSource);
       },
       error: error => {
           console.error('There was an error!', error);

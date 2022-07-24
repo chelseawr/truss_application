@@ -4,15 +4,25 @@
     min-width: 300px;
   }
 
-  .mat-table {
+.mat-table {
     overflow: auto;
     max-height: 90%;
-  }
+}
 
-  .mat-header-cell.mat-sort-header-sorted {
-    color: black;
-  }
+.mat-cell {
+  border-right: 1px solid grey;
+  min-height: 76px;
+  padding: 10px 18px 10px 22px;
+}
+
+.mat-header-cell {
+  color: black;
+  min-height: 76px;
+  padding: 10px 18px 10px 22px;
+}
 
 .mat-progress-spinner {
-  stroke:#1976d2;
+    stroke:#1976d2;
 }
+
+
