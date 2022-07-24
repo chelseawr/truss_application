@@ -24,4 +24,5 @@ export interface PlanetInterface {
     population: string;
     terrain: string;
     climate: string;
+    url: string;
   }

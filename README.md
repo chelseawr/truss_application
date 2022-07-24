@@ -1,11 +1,12 @@
 # TrussApp
-
+Chelsea May's application for Software Engineer at TrussWorks 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.1.0.
+July 2022
 
-## 1. Install packages
+##  Install packages
 Run `npm install` to install application Node packages. You may have to [download Node](https://nodejs.org/en/download/). 
 
-## Development server
+## Start Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 

@@ -56,7 +56,6 @@ export class PlanetComponent implements OnInit {
 
         // TODO population spacing
 
-
         let newParent: object[] = [];
         // Loop through each result
         for (let x=0; x < this.origObj.results.length; x++){
@@ -68,7 +67,7 @@ export class PlanetComponent implements OnInit {
           this.planetObj.name = this.origObj.results[x].name;
           this.planetObj.climate = this.origObj.results[x].climate;
           this.planetObj.terrain = this.origObj.results[x].terrain;
-
+          this.planetObj.url = this.origObj.results[x].url;
 
           // Number of pernament residents (res)
           this.planetObj.res = Array.isArray(this.origObj.results[x].residents) ? this.origObj.results[x].residents.length : 0;
