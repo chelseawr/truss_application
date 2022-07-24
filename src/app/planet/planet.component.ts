@@ -28,11 +28,6 @@ export class PlanetComponent implements OnInit {
   constructor(private SWAPI: PlanetService) { }
 
   // Helper functions
-  round(num: number) {
-    var m = Number((Math.abs(num) * 100).toPrecision(15));
-    return Math.round(m) / 100 * Math.sign(num);
-  }
-
   replace_unkown(obj: any){
     // clone to new obj
     let newObj = JSON.parse(JSON.stringify(obj));
@@ -79,7 +74,7 @@ export class PlanetComponent implements OnInit {
 
           if (Number.isInteger(waterPercentage)){
             waterPercentage = waterPercentage / 100;
-            this.planetObj.waterSA = this.round(planetSA * waterPercentage) + ' km\u00B2';
+            this.planetObj.waterSA = Math.round(planetSA * waterPercentage) + ' km\u00B2';
           }
           else this.planetObj.waterSA = '?';
 
