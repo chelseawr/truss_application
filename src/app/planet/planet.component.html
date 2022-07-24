@@ -36,10 +36,15 @@
         <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
     </mat-table>
+    <div *ngIf="error">
+      <p>There was an error reaching that URL</p>
+      <p>Check planetService.baseUrl</p>
+      <p>Refer to <a href="https://swapi.dev/documentation">Star Wars API</a></p>
+    </div>
     <div *ngIf="isLoading"
         style="display: flex; justify-content: center; align-items: center; background: white;">
       <mat-progress-spinner
         mode="indeterminate">
       </mat-progress-spinner>
- </div>
+    </div>
 </div>

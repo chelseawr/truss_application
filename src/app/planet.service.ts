@@ -12,7 +12,6 @@ import { APIPlanetInterface } from './planet';
 
 export class PlanetService {
 
-  //baseURL: string =
   private baseUrl = "https://swapi.dev/api/planets/";
   constructor(private http: HttpClient) {}
 

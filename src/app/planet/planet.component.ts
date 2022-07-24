@@ -16,7 +16,7 @@ export class PlanetComponent implements OnInit {
   origObj: any;
   dataSource: any;
   isLoading = true;
-  page:  number = 1;
+  error = false;
   displayedColumns: string[] = ['name', 'climate', 'terrain', 'population', 'res', 'waterSA'];
 
   @ViewChild(MatSort)
@@ -94,6 +94,7 @@ export class PlanetComponent implements OnInit {
       },
       error: error => {
           console.error('There was an error!', error);
+          this.error = true;
           this.isLoading = false;
       }
     })
