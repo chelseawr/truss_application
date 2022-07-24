@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { PlanetService } from '../planet.service';
 import {MatTableDataSource} from '@angular/material/table';
-import {MatSort} from '@angular/material/sort';
+import {MatSort, MatSortable} from '@angular/material/sort';
 import { ResourceLoader } from '@angular/compiler';
 import { APIPlanetInterface, PlanetInterface } from '../planet';
 
@@ -16,7 +16,7 @@ export class PlanetComponent implements OnInit {
   origObj: any;
   dataSource: any;
   page:  number = 1;
-  displayedColumns = ['name', 'climate', 'terrain', 'population', 'res', 'waterSA'];
+  displayedColumns: string[] = ['name', 'climate', 'terrain', 'population', 'res', 'waterSA'];
 
   @ViewChild(MatSort)
   sort: MatSort = new MatSort;
@@ -24,11 +24,13 @@ export class PlanetComponent implements OnInit {
   ngAfterViewInit() {
     this.dataSource.sort = this.sort;
   }
+
   constructor(private SWAPI: PlanetService) { }
 
+  // Helper functions
   round(num: number) {
     var m = Number((Math.abs(num) * 100).toPrecision(15));
-    return Math.round(m) / 100 * Math.sign(num);  
+    return Math.round(m) / 100 * Math.sign(num);
   }
 
   replace_unkown(obj: any){
@@ -45,13 +47,13 @@ export class PlanetComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    
+
 
     this.origObj = this.SWAPI.getPlanets().subscribe({
       next: data => {
-        
+
         this.origObj = data;
-       
+
         // TODO population spacing
 
 
@@ -61,7 +63,7 @@ export class PlanetComponent implements OnInit {
 
           // Replace any unknown values
           this.planetObj = this.replace_unkown(this.origObj.results[x]);
-          
+
           // Copy values that do not need mangling
           this.planetObj.name = this.origObj.results[x].name;
           this.planetObj.climate = this.origObj.results[x].climate;
@@ -70,12 +72,12 @@ export class PlanetComponent implements OnInit {
 
           // Number of pernament residents (res)
           this.planetObj.res = Array.isArray(this.origObj.results[x].residents) ? this.origObj.results[x].residents.length : 0;
-  
+
           // Convert water surface area (waterSA)
           // TODO break out func  getPlanetSA(diam) or similar
           let planetSA = (4 * Math.PI * (parseInt(this.origObj.results[x].diameter) / 2));
-          let waterPercentage = parseInt(this.origObj.results[x].surface_water);        
-          
+          let waterPercentage = parseInt(this.origObj.results[x].surface_water);
+
           if (Number.isInteger(waterPercentage)){
             waterPercentage = waterPercentage / 100;
             this.planetObj.waterSA = this.round(planetSA * waterPercentage) + ' km\u00B2';
@@ -87,6 +89,13 @@ export class PlanetComponent implements OnInit {
 
         // Set table source
         this.dataSource = new MatTableDataSource(newParent);
+
+        // Sort table by name desc as default
+        this.sort.sort(({ id: 'name', start: 'asc'}) as MatSortable);
+        this.dataSource.sort = this.sort;
+
+        console.log(newParent);
+        console.log(this.dataSource);
       },
       error: error => {
           console.error('There was an error!', error);
