@@ -30,6 +30,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('truss_app app is running!');
+    expect(compiled.querySelector('.toolbar h2')?.textContent).toContain('Chelsea May');
   });
 });

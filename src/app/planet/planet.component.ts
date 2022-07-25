@@ -14,7 +14,7 @@ import { APIPlanetInterface, PlanetInterface } from '../planet';
 export class PlanetComponent implements OnInit {
   planetObj = {} as PlanetInterface;
   origObj: any;
-  dataSource: any;
+  dataSource: any; // TODO needs initialized as an interface
   isLoading = true;
   error = false;
   displayedColumns: string[] = ['name', 'climate', 'terrain', 'population', 'res', 'waterSA'];
