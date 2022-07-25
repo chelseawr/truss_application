@@ -1,11 +1,18 @@
+<div class="app-container">
+  <div class="toolbar" role="banner">
+    <h2 class="padding">Chelsea May - TrussWorks SWE application</h2>
+    <div class="spacer"></div>
+    <a href="https://github.com/chelseawr/truss_application" class="padding"><fa-icon [icon]="gitIcon" size="2x"></fa-icon></a>
+    <a href="https://www.chelsea.dev" class="padding"><fa-icon [icon]="devIcon" size="2x"></fa-icon></a>
+    <a href="https://www.linkedin.com/in/chelseawr/" class="padding"><fa-icon [icon]="liIcon" size="2x"></fa-icon></a>
 
-<div class="toolbar" role="banner">
-  <h2 class="padding">Chelsea May - TrussWorks SWE application</h2>
+
+  </div>
+
+  <div class="content" role="main">
+
+  <app-planet></app-planet>
+
+  </div>
+  <router-outlet></router-outlet>
 </div>
-
-<div class="content" role="main">
-<mat-spinner></mat-spinner>
-<app-planet></app-planet>
-
-</div>
-<router-outlet></router-outlet>
