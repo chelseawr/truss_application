@@ -4,7 +4,7 @@
 
         <ng-container matColumnDef="name">
             <mat-header-cell *matHeaderCellDef mat-sort-header>Planet Name</mat-header-cell>
-            <mat-cell *matCellDef="let element"> <a href={{element.url}}>{{element.name}} </a></mat-cell>
+            <mat-cell *matCellDef="let element"> <a href={{element.url}} target="_blank">{{element.name}} </a></mat-cell>
         </ng-container>
 
         <ng-container matColumnDef="climate">
