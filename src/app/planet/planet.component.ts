@@ -59,7 +59,6 @@ export class PlanetComponent implements OnInit {
 
   ngOnInit(): void {
 
-
     this.origObj = this.SWAPI.getPlanets().subscribe({
       next: data => {
         this.isLoading = false;
@@ -77,7 +76,7 @@ export class PlanetComponent implements OnInit {
 
           // Convert water surface area (waterSA)
               // TODO break out func  getPlanetSA(diam) or similar
-          let planetSA = (4 * Math.PI * (parseInt(this.origObj.results[x].diameter) / 2));
+          let planetSA = (4 * Math.PI * (parseInt(this.origObj.results[x].diameter) / 2) **2);
           let waterPercentage = parseInt(this.origObj.results[x].surface_water);
 
           if (Number.isInteger(waterPercentage)){ // avoid NaN
